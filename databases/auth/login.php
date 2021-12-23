@@ -10,8 +10,10 @@ if (isset($_POST["login"])) {
     $row = mysqli_fetch_assoc($result);
     if (password_verify($password, $row["password"])) {
       header("Location: http://localhost/learn/databases/index.php");
+      exit;
     }
   }
+  $error = true;
 }
 ?>
 
@@ -27,10 +29,21 @@ if (isset($_POST["login"])) {
   label {
     display: block;
   }
+
+  .error {
+    color: red;
+  }
   </style>
 </head>
 
 <body>
+  <?php
+  if (isset($error)) {
+    echo "
+      <h3 class='error'>username / password not valid</h3>
+    ";
+  }
+  ?>
   <form action="" method="POST">
     <ul>
       <li>
