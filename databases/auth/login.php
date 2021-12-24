@@ -1,6 +1,17 @@
 <?php
 session_start();
 
+if (isset($_COOKIE["login"])) {
+  if ($_COOKIE["login"] === 'true') {
+    $_SESSION["login"] = true;
+  }
+}
+
+if (isset($_SESSION["login"])) {
+  header("Location:  http://localhost/learn/databases/index.php");
+  exit;
+}
+
 require("../functions.php");
 if (isset($_POST["login"])) {
   $username = $_POST["username"];
@@ -13,6 +24,10 @@ if (isset($_POST["login"])) {
     if (password_verify($password, $row["password"])) {
       header("Location: http://localhost/learn/databases/index.php");
       $_SESSION["login"] = true;
+
+      if (isset($_POST["remember"])) {
+        setcookie("login", "true", time() + 120);
+      }
       exit;
     }
   }
@@ -56,6 +71,10 @@ if (isset($_POST["login"])) {
       <li>
         <label>Password</label>
         <input type="text" name="password">
+      </li>
+      <li>
+        <input name="remember" type="checkbox" />
+        <label>Remember Me</label>
       </li>
       <li>
         <button name="login" type="submit">Login</button>

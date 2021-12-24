@@ -4,6 +4,7 @@ if (!isset($_SESSION["login"])) {
   header("Location: http://localhost/learn/databases/auth/login.php");
   exit;
 }
+
 ?>
 
 <!DOCTYPE html>

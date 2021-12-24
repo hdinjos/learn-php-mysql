@@ -1,12 +1,4 @@
 <?php
-session_start();
-if (!isset($_SESSION["login"])) {
-  header("Location: http://localhost/learn/databases/auth/login.php");
-  exit;
-}
-?>
-
-<?php
 $conn = mysqli_connect("localhost", "root", "", "tes_php");
 
 function lists($query)
