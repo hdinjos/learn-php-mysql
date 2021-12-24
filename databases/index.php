@@ -34,6 +34,8 @@ if (!isset($_SESSION["login"])) {
 
   ?>
 
+  <a href="./auth/logout.php">Logout</a>
+
   <h1>CRUD PHP database phpmyadmin</h1>
   <a href="add_user.php">Add</a> <br />
   <form action="" method="POST">
