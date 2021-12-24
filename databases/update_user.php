@@ -1,4 +1,12 @@
 <?php
+session_start();
+if (!isset($_SESSION["login"])) {
+  header("Location: http://localhost/learn/databases/auth/login.php");
+  exit;
+}
+?>
+
+<?php
 require "functions.php";
 $user = getUser($_GET["id"]);
 

@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 require("../functions.php");
 if (isset($_POST["login"])) {
   $username = $_POST["username"];
@@ -10,6 +12,7 @@ if (isset($_POST["login"])) {
     $row = mysqli_fetch_assoc($result);
     if (password_verify($password, $row["password"])) {
       header("Location: http://localhost/learn/databases/index.php");
+      $_SESSION["login"] = true;
       exit;
     }
   }
