@@ -1,18 +1,27 @@
 <?php
+ob_start();
 session_start();
+require("../functions.php");
 
-if (isset($_COOKIE["login"])) {
-  if ($_COOKIE["login"] === 'true') {
+//check coookie
+if (isset($_COOKIE["uniqId"]) && isset($_COOKIE["uniqName"])) {
+  $id = $_COOKIE["uniqId"];
+  $name = $_COOKIE["uniqName"];
+
+  $result = mysqli_query($conn, "SELECT * FROM register WHERE id='$id'");
+  $row =  mysqli_fetch_assoc($result);
+  if ($name === hash("sha256", $row["username"])) {
+    var_dump($row);
     $_SESSION["login"] = true;
   }
 }
 
+
 if (isset($_SESSION["login"])) {
-  header("Location:  http://localhost/learn/databases/index.php");
+  header("Location: http://localhost/learn/databases/index.php");
   exit;
 }
 
-require("../functions.php");
 if (isset($_POST["login"])) {
   $username = $_POST["username"];
   $password = $_POST["password"];
@@ -22,12 +31,13 @@ if (isset($_POST["login"])) {
   if (mysqli_num_rows($result) === 1) {
     $row = mysqli_fetch_assoc($result);
     if (password_verify($password, $row["password"])) {
-      header("Location: http://localhost/learn/databases/index.php");
       $_SESSION["login"] = true;
 
       if (isset($_POST["remember"])) {
-        setcookie("login", "true", time() + 120);
+        setcookie("uniqId", $row['id'], time() + 120);
+        setcookie("uniqName", hash("sha256", $row["username"]), time() + 120);
       }
+      header("Location: http://localhost/learn/databases/index.php");
       exit;
     }
   }
